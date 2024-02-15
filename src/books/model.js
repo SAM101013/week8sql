@@ -22,4 +22,10 @@ const Book = sequelize.define(
   { timestamps: false }
 );
 
+// Define associations
+
+const Author = require("../author/model1");
+
+Book.belongsTo(Author);
+
 module.exports = Book;

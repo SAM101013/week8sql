@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const authorRouter = Router();
-const { addAuthor } = require("./controller1");
 const Author = require("./model1");
+const { addAuthor } = require("./controller1");
 
 // Add single Author
-authorRouter.post("/addAuthor", addAuthor);
+authorRouter.post("./books/addAuthor", addAuthor);
 
 module.exports = authorRouter;

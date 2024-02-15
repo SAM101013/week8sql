@@ -4,7 +4,7 @@ const bookRouter = require("./books/routes");
 const authorRouter = require("./author/routes1");
 const genreRouter = require("./genre/routes2");
 
-// Import the damn models
+// Import the models
 const Book = require("./books/model");
 const Author = require("./author/model1");
 const Genre = require("./genre/model2");
@@ -21,9 +21,22 @@ const port = process.env.PORT || 5001;
 
 const syncTables = async () => {
   try {
+    const Book = require("./books/model"); // Adjust the path based on your file structure
+    const Author = require("./author/model1"); // Adjust the path based on your file structure
+    const Genre = require("./genre/model2"); // Adjust the path based on your file structure
+
+    // Synchronize tables
+
     await Book.sync();
     await Author.sync();
     await Genre.sync();
+
+    // Define associations
+    Book.belongsTo(Author); // A book belongs to an author
+    Book.belongsTo(Genre); // A book belongs to a genre
+    Author.hasMany(Book); // An author can have many books
+    Genre.hasMany(Book); // A genre can have many books
+
     console.log("Tables synchronized successfully");
   } catch (error) {
     console.error("Error synchronizing tables:", error);
@@ -33,18 +46,6 @@ const syncTables = async () => {
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "API is healthy" });
 });
-
-// app.listen(port, () => {
-//   syncTables()
-//     .then(() => {
-//       console.log(`Tables synchronized successfully`);
-//       app.use(authorRouter);
-//       console.log(`Server is listening on port ${port}`);
-//     })
-//     .catch((error) => {
-//       console.error("Error synchronizing tables:", error);
-//     });
-// });
 
 app.listen(port, () => {
   syncTables();

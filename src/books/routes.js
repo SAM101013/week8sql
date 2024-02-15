@@ -1,40 +1,59 @@
 const { Router } = require("express");
 const bookRouter = Router();
-const { addBook } = require("./controllers");
-const { deleteBook } = require("./controllers");
+const { getAllBooks } = require("./controllers");
+
 const Book = require("./model");
 
+//navigator;
+
+bookRouter.get("./books/getAllBooks", getAllBooks);
 //Get All Books
 
-// Define a route to get all books
-bookRouter.get("/books/allBooks", async (req, res) => {
+//Route to add a single book
+bookRouter.post("./books/addBook", async (req, res) => {
   try {
-    const allBooks = await Book.find();
-    res.json(allBooks);
-  } catch (error) {
-    console.error("Error getting books:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+    const { title, author, genre } = req.body;
 
-//Add single book
-bookRouter.post("/books/addBook", addBook);
-
-// Get single book
-bookRouter.get("/books/:title", async (req, res) => {
-  const { title } = req.params;
-
-  try {
-    const book = await Book.findOne({ title });
-    if (!book) {
-      return res.status(404).json({ message: "Book not found" });
+    // Check if the title already exists
+    const existingBook = await Book.findOne({ where: { title: title } });
+    if (existingBook) {
+      return res.status(400).json({ message: "Book title already exists" });
     }
-    res.json(book);
+
+    // Create a new book record
+    const newBook = await Book.create({
+      title: title,
+      author: author,
+      genre: genre,
+    });
+
+    // Respond with the newly created book
+    return res
+      .status(201)
+      .json({ message: "Book added successfully", book: newBook });
   } catch (error) {
-    console.error("Error getting book:", error);
-    res.status(500).send({ message: "Server error" });
+    console.error("Error adding book:", error);
+    return res
+      .status(500)
+      .json({ message: "Failed to add book", error: error });
   }
 });
+
+// // Get single book
+// bookRouter.get("/books/:title", async (req, res) => {
+//   const { title } = req.params;
+
+//   try {
+//     const book = await Book.findOne({ title });
+//     if (!book) {
+//       return res.status(404).json({ message: "Book not found" });
+//     }
+//     res.json(book);
+//   } catch (error) {
+//     console.error("Error getting book:", error);
+//     res.status(500).send({ message: "Server error" });
+//   }
+// });
 
 // Update single book
 
