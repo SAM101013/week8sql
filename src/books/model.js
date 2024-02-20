@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-
 const sequelize = require("../db/connection");
 
 const Book = sequelize.define(
@@ -23,9 +22,10 @@ const Book = sequelize.define(
 );
 
 // Define associations
+// Since you want each book to belong to an author, you should define a belongsTo association
 
 const Author = require("../author/model1");
 
-Book.belongsTo(Author);
+Book.belongsTo(Author); // Each book belongs to an author
 
 module.exports = Book;

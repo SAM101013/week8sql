@@ -21,17 +21,13 @@ const port = process.env.PORT || 5001;
 
 const syncTables = async () => {
   try {
-    const Book = require("./books/model"); // Adjust the path based on your file structure
-    const Author = require("./author/model1"); // Adjust the path based on your file structure
-    const Genre = require("./genre/model2"); // Adjust the path based on your file structure
-
     // Synchronize tables
-
     await Book.sync();
     await Author.sync();
     await Genre.sync();
 
     // Define associations
+
     Book.belongsTo(Author); // A book belongs to an author
     Book.belongsTo(Genre); // A book belongs to a genre
     Author.hasMany(Book); // An author can have many books

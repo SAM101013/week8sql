@@ -1,4 +1,4 @@
-const Author = require("../author/model1");
+const Author = require("./model1");
 const Book = require("../books/model");
 
 Author.hasMany(Book);
@@ -18,12 +18,14 @@ const addAuthor = async (req, res) => {
   }
 };
 
-// const getSingleAuthorByAuthorId = async (req,res)=> {
-//   const author = await Author.findOne ({ where: { author: req.params.authorId}});
+const getSingleAuthorByAuthorId = async (req, res) => {
+  const author = await Author.findOne({
+    where: { author: req.params.authorId },
+  });
 
-//   res.send({ message: "success", author:author});
-// }
+  res.send({ message: "success", author: author });
+};
 module.exports = {
   addAuthor: addAuthor,
-  // getSingleAuthorByAuthorId:getSingleAuthorByAuthorId
+  getSingleAuthorByAuthorId: getSingleAuthorByAuthorId,
 };
