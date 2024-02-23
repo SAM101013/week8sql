@@ -6,9 +6,8 @@ Author.hasMany(Book);
 const addAuthor = async (req, res) => {
   try {
     const author = await Author.create({
-      title: req.body.firstName,
-      Author: req.body.lastName,
-      genre: req.body.location,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
     });
     res
       .status(201)
@@ -18,14 +17,14 @@ const addAuthor = async (req, res) => {
   }
 };
 
-const getSingleAuthorByAuthorId = async (req, res) => {
+const getSingleAuthorById = async (req, res) => {
   const author = await Author.findOne({
-    where: { author: req.params.authorId },
+    where: { author: req.params.Id },
   });
 
   res.send({ message: "success", author: author });
 };
 module.exports = {
   addAuthor: addAuthor,
-  getSingleAuthorByAuthorId: getSingleAuthorByAuthorId,
+  getSingleAuthorById: getSingleAuthorById,
 };

@@ -21,17 +21,16 @@ const port = process.env.PORT || 5001;
 
 const syncTables = async () => {
   try {
-    // Synchronize tables
-    await Book.sync();
-    await Author.sync();
-    await Genre.sync();
-
     // Define associations
 
-    Book.belongsTo(Author); // A book belongs to an author
-    Book.belongsTo(Genre); // A book belongs to a genre
-    Author.hasMany(Book); // An author can have many books
-    Genre.hasMany(Book); // A genre can have many books
+    Author.hasMany(Book);
+    Genre.hasMany(Book);
+    Book.belongsTo(Author);
+    Book.belongsTo(Genre);
+
+    await Author.sync();
+    await Genre.sync();
+    await Book.sync();
 
     console.log("Tables synchronized successfully");
   } catch (error) {
